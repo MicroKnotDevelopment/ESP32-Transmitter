@@ -15,13 +15,13 @@
 
 static int taskCore1 = 0;
 static int taskCore2 = 1;
-TaskHandle_t task_rxSetData;
-TaskHandle_t task_rxSendData;
+TaskHandle_t task_txSetData;
+TaskHandle_t task_txSendData;
 
 /**
  * Use core 0 to read the inputs
  */
-void func_rxSetData( void * pvParameters ){
+void func_txSetData( void * pvParameters ){
     while(true){
       /*
         ads1115 read
@@ -51,7 +51,7 @@ void func_rxSetData( void * pvParameters ){
 /**
  * Use core 0 to send the data
  */
-void func_rxSendData( void * pvParameters ){
+void func_txSendData( void * pvParameters ){
     while(true){
       /*
         Radio Transmit
@@ -107,22 +107,22 @@ void setup() {
   ads1115Init();
 
   xTaskCreatePinnedToCore(
-    func_rxSetData,   // Function to implement the task
-    "task_rxSetData", // Name of the task
+    func_txSetData,   // Function to implement the task
+    "task_txSetData", // Name of the task
     10000,            // Stack size in words
     NULL,             // Task input parameter
     0,                // Priority of the task
-    &task_rxSetData,  // Task handle
+    &task_txSetData,  // Task handle
     taskCore1         // Core where the task should run
   );
  
   xTaskCreatePinnedToCore(
-    func_rxSendData,    // Function to implement the task
-    "task_rxSendData",  // Name of the task 
+    func_txSendData,    // Function to implement the task
+    "task_txSendData",  // Name of the task 
     10000,              // Stack size in words 
     NULL,               // Task input parameter
     1,                  // Priority of the task
-    &task_rxSendData,   // Task handle
+    &task_txSendData,   // Task handle
     taskCore2           // Core where the task should run
   );
 }

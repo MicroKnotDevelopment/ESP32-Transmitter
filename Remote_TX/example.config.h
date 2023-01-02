@@ -50,6 +50,7 @@ bool enableSerialPrint = false;
 #define POTENTIOMETER_PIN4 A8 //15
 #define POTENTIOMETER_PIN5 A9 //33
 #define POTENTIOMETER_PIN6 A7 //32
+int potSensitivityValue = 2;
 
 // Joystick Values
 int joystickMaxValue = 26598; // Max possible value

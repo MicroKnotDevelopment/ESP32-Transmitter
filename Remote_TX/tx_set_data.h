@@ -6,13 +6,27 @@ void potentiometersSetData() {
   /*
     Potentiometer Values
   */
-  packageData.structure.p1 = map(analogRead(POTENTIOMETER_PIN1), 0, 4095, 255, 0);
-  packageData.structure.p2 = map(analogRead(POTENTIOMETER_PIN2), 0, 4095, 255, 0);
-  packageData.structure.p3 = map(analogRead(POTENTIOMETER_PIN3), 0, 4095, 255, 0);
-  packageData.structure.p4 = map(analogRead(POTENTIOMETER_PIN4), 0, 4095, 255, 0);
-  packageData.structure.p5 = map(analogRead(POTENTIOMETER_PIN5), 0, 4095, 0, 255);
-  packageData.structure.p6 = map(analogRead(POTENTIOMETER_PIN6), 0, 4095, 255, 0);
-  
+  pot1Read = analogRead(POTENTIOMETER_PIN1);
+  pot2Read = analogRead(POTENTIOMETER_PIN1);
+  pot3Read = analogRead(POTENTIOMETER_PIN1);
+  pot4Read = analogRead(POTENTIOMETER_PIN1);
+  pot5Read = analogRead(POTENTIOMETER_PIN1);
+  pot6Read = analogRead(POTENTIOMETER_PIN1);
+
+  pot1LastValue = ((pot1LastValue > pot1Read + potSensitivityValue) || (pot1LastValue < pot1Read - potSensitivityValue)) ? pot1Read : pot1LastValue;
+  pot2LastValue = ((pot2LastValue > pot2Read + potSensitivityValue) || (pot2LastValue < pot2Read - potSensitivityValue)) ? pot2Read : pot2LastValue;
+  pot3LastValue = ((pot3LastValue > pot3Read + potSensitivityValue) || (pot3LastValue < pot3Read - potSensitivityValue)) ? pot3Read : pot3LastValue;
+  pot4LastValue = ((pot4LastValue > pot4Read + potSensitivityValue) || (pot4LastValue < pot4Read - potSensitivityValue)) ? pot4Read : pot4LastValue;
+  pot5LastValue = ((pot5LastValue > pot5Read + potSensitivityValue) || (pot5LastValue < pot5Read - potSensitivityValue)) ? pot5Read : pot5LastValue;
+  pot6LastValue = ((pot6LastValue > pot6Read + potSensitivityValue) || (pot6LastValue < pot6Read - potSensitivityValue)) ? pot6Read : pot6LastValue;
+
+  packageData.structure.p1 = map(pot1LastValue, 0, 4095, 255, 0);
+  packageData.structure.p2 = map(pot2LastValue, 0, 4095, 255, 0);
+  packageData.structure.p3 = map(pot3LastValue, 0, 4095, 255, 0);
+  packageData.structure.p4 = map(pot4LastValue, 0, 4095, 255, 0);
+  packageData.structure.p5 = map(pot5LastValue, 0, 4095, 0, 255);
+  packageData.structure.p6 = map(pot6LastValue, 0, 4095, 255, 0);
+
   /*
     Potentiometer Switches
   */
