@@ -1,0 +1,6 @@
+# General
+.DS_Store
+config.h
+*.svd
+*.cfg
+*.json
