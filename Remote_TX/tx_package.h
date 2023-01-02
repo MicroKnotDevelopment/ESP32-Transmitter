@@ -3,9 +3,6 @@
  */
 
 typedef struct package {
-  // Password
-  char password;
-
   // Left Joystick
   byte j1x; // left-right
   byte j1y; // up-down

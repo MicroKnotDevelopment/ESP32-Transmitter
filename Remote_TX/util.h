@@ -38,7 +38,9 @@ void mcp1Init() {
   encoder2 = new RotaryEncoder(
     mcp1.digitalRead(rotary2_enc_1),
     mcp1.digitalRead(rotary2_enc_2),
-    RotaryEncoder::LatchMode::TWO03
+    RotaryEncoder::LatchMode::TWO03,
+    false,
+    false
   );
 }
 
@@ -68,7 +70,9 @@ void mcp2Init() {
   encoder1 = new RotaryEncoder(
     mcp2.digitalRead(rotary1_enc_1),
     mcp2.digitalRead(rotary1_enc_2),
-    RotaryEncoder::LatchMode::TWO03
+    RotaryEncoder::LatchMode::TWO03,
+    false,
+    false
   );
 }
 
