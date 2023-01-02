@@ -1,3 +1,6 @@
+// Debug
+bool enableSerialPrint = false;
+
 // MCP23017
 #define MCP23X17_addr1 0x25
 #define MCP23X17_addr2 0x26
@@ -50,7 +53,7 @@
 
 // Joystick Values
 int joystickMaxValue = 26598; // Max possible value
-int joystickDiffValue = 500; // This is used for the joystick sensitivity
+int joystickSensitivityValue = 500; // This is used for the joystick sensitivity
 
 /*
   SX1280 has the following connections:
@@ -71,7 +74,7 @@ SX1280 radio = new Module(2, 26, 14, 21);
 * \param power Output power in dBm. Defaults to 10 dBm.
 * \param preambleLength LoRa preamble length in symbols. Defaults to 12 symbols.
  */
-float SX1280_freq = 2434.0; // Allowed values are in range from 2400.0 to 2500.0 MHz.
+float SX1280_freq = 2400.0; // Allowed values are in range from 2400.0 to 2500.0 MHz.
 float SX1280_bw = 812.5; // Allowed values are 203.125, 406.25, 812.5 and 1625.0 kHz.
 uint8_t SX1280_sf = 9; // Allowed values range from 5 to 12.
 uint8_t SX1280_cr = 7; // Allowed values range from 5 to 8.

@@ -78,7 +78,9 @@ void mcp2Init() {
 
 // sx1280 init
 void sx1280Init() {
-  Serial.print(F("[SX1280] Initializing ... "));
+  if(enableSerialPrint) {
+    Serial.print(F("[SX1280] Initializing ... ")); 
+  }
   // carrier frequency:           2400.0 MHz
   // bandwidth:                   812.5 kHz
   // spreading factor:            9
@@ -88,14 +90,14 @@ void sx1280Init() {
   // CRC:                         enabled
   int state = radio.begin(SX1280_freq, SX1280_bw, SX1280_sf, SX1280_cr, SX1280_syncWord, SX1280_power, SX1280_preambleLength);
 
-
-  
-  if (state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while (true);
+  if(enableSerialPrint) {
+    if (state == RADIOLIB_ERR_NONE) {
+      //Serial.println(F("success!"));
+    } else {
+      Serial.print(F("failed, code "));
+      Serial.println(state);
+      while (true);
+    }
   }
 }
 

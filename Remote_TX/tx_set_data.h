@@ -33,9 +33,8 @@ void switchesSetData() {
 }
 
 void anoRotaryEncoder2SetData() {
-  static int pos2 = 0;
-  int newPos2 = encoder2->getPosition(),
-  direction2 = 0;
+  static int pos = 0;
+  int encoder_direction = 0;
 
   packageData.structure.re2_up      = !mcp1.digitalRead(rotary2_2);
   packageData.structure.re2_down    = !mcp1.digitalRead(rotary2_4);
@@ -43,36 +42,38 @@ void anoRotaryEncoder2SetData() {
   packageData.structure.re2_right   = !mcp1.digitalRead(rotary2_5);
   packageData.structure.re2_center  = !mcp1.digitalRead(rotary2_1);
 
-  rotary2_enc1 = mcp1.digitalRead(rotary2_enc_1);
-  rotary2_enc2 = mcp1.digitalRead(rotary2_enc_2);
+  encoder2->tick(
+    mcp1.digitalRead(rotary2_enc_1),
+    mcp1.digitalRead(rotary2_enc_2)
+  );
 
-  encoder2->tick(rotary2_enc1, rotary2_enc2);
+  int newPos = encoder2->getPosition();
 
   packageData.structure.re2_dir = 0;
-  if (pos2 != newPos2) {
-    pos2 = newPos2;
-    direction2 = (int)encoder2->getDirection();
+  if (pos != newPos) {
+    pos = newPos;
+    encoder_direction = (int)encoder2->getDirection();
   }
-  packageData.structure.re2_dir = direction2;
+  packageData.structure.re2_dir = encoder_direction;
 }
 
 void anoRotaryEncoder1SetData() {
-  static int pos1 = 0;
-  int newPos1 = encoder1->getPosition(),
-      direction1 = 0;
+  static int pos = 0;
+  int encoder_direction = 0;
 
   encoder1->tick(
     mcp2.digitalRead(rotary1_enc_1),
     mcp2.digitalRead(rotary1_enc_2)
   );
+  int newPos = encoder1->getPosition();
 
   packageData.structure.re1_dir = 0;
-  if (pos1 != newPos1) {
-    pos1 = newPos1;
-    direction1 = (int)encoder1->getDirection();
+  if (pos != newPos) {
+    pos = newPos;
+    encoder_direction = (int)encoder1->getDirection();
   }
   
-  packageData.structure.re1_dir     = direction1;
+  packageData.structure.re1_dir     = encoder_direction;
   packageData.structure.re1_up      = !mcp2.digitalRead(rotary1_4);
   packageData.structure.re1_down    = !mcp2.digitalRead(rotary1_2);
   packageData.structure.re1_left    = !mcp2.digitalRead(rotary1_3);
@@ -81,8 +82,7 @@ void anoRotaryEncoder1SetData() {
 }
 
 void joysticksSetData() {
-  //Joystick AutoCalibration
-
+  //Joystick center calibration
   adc0 = ads.readADC_SingleEnded(0);
   adc1 = ads.readADC_SingleEnded(1);
   adc2 = ads.readADC_SingleEnded(2);
@@ -95,24 +95,24 @@ void joysticksSetData() {
   j2yMiddle = j2yMiddle > 0 ? j2yMiddle : adc3;
 
   // Right Joystick
+
   // Right - Left
   adc0_map = map(adc0, 0, joystickMaxValue, 0, 255);
-
   // Top - Bottom
   adc1_map = map(adc1, 0, joystickMaxValue, 0, 255);
 
   // Left Joystick
+
   // Right - Left
   adc2_map = map(adc2, 0, joystickMaxValue, 0, 255);
-
   // Top - Bottom
   adc3_map = map(adc3, 0, joystickMaxValue, 0, 255);
 
   // Left Joystick
-  packageData.structure.j1x = (adc2 > j1xMiddle + joystickDiffValue || adc2 < j1xMiddle - joystickDiffValue || adc2 < 0 ) ? adc2_map : 127; // up-down
-  packageData.structure.j1y = (adc3 > j1yMiddle + joystickDiffValue || adc3 < j1yMiddle - joystickDiffValue || adc3 < 0 ) ? adc3_map : 127; // left-right
+  packageData.structure.j1x = (adc2 > j1xMiddle + joystickSensitivityValue || adc2 < j1xMiddle - joystickSensitivityValue || adc2 < 0 ) ? adc2_map : 127; // up-down
+  packageData.structure.j1y = (adc3 > j1yMiddle + joystickSensitivityValue || adc3 < j1yMiddle - joystickSensitivityValue || adc3 < 0 ) ? adc3_map : 127; // left-right
 
   // Right Joystick
-  packageData.structure.j2x = (adc0 > j2xMiddle + joystickDiffValue || adc0 < j2xMiddle - joystickDiffValue || adc0 < 0 ) ? adc0_map : 127; // up-down
-  packageData.structure.j2y = (adc1 > j2yMiddle + joystickDiffValue || adc1 < j2yMiddle - joystickDiffValue || adc1 < 0 ) ? adc1_map : 127; // left-right
+  packageData.structure.j2x = (adc0 > j2xMiddle + joystickSensitivityValue || adc0 < j2xMiddle - joystickSensitivityValue || adc0 < 0 ) ? adc0_map : 127; // up-down
+  packageData.structure.j2y = (adc1 > j2yMiddle + joystickSensitivityValue || adc1 < j2yMiddle - joystickSensitivityValue || adc1 < 0 ) ? adc1_map : 127; // left-right
 }
