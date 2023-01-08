@@ -66,19 +66,10 @@ int joystickSensitivityValue = 500; // This is used for the joystick sensitivity
  
 SX1280 radio = new Module(2, 26, 14, 21);
 
-/*
-* \param freq Carrier frequency in MHz. Defaults to 2400.0 MHz.
-* \param bw LoRa bandwidth in kHz. Defaults to 812.5 kHz.
-* \param sf LoRa spreading factor. Defaults to 9.
-* \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7).
-* \param syncWord 2-byte LoRa sync word. Defaults to RADIOLIB_SX128X_SYNC_WORD_PRIVATE (0x12).
-* \param power Output power in dBm. Defaults to 10 dBm.
-* \param preambleLength LoRa preamble length in symbols. Defaults to 12 symbols.
- */
-float SX1280_freq = 2400.0; // Allowed values are in range from 2400.0 to 2500.0 MHz.
-float SX1280_bw = 812.5; // Allowed values are 203.125, 406.25, 812.5 and 1625.0 kHz.
-uint8_t SX1280_sf = 9; // Allowed values range from 5 to 12.
-uint8_t SX1280_cr = 7; // Allowed values range from 5 to 8.
-uint8_t SX1280_syncWord = RADIOLIB_SX128X_SYNC_WORD_PRIVATE;
-int8_t SX1280_power = 10; // Allowed values are in range from -18 to 13 dBm.
-uint16_t SX1280_preambleLength = 12; // Allowed values range from 1 to 65535.
+float frequency     = 2400.0;
+int bitRate         = 520;
+int codingRate      = 2;
+int outputPower     = 8;
+float dataShaping   = 1.0;
+uint8_t syncWord[]  = {0x01, 0x23, 0x45, 0x67};
+int crcValue        = 0;

@@ -47,7 +47,6 @@ void switchesSetData() {
 }
 
 void anoRotaryEncoder2SetData() {
-  static int pos = 0;
   int encoder_direction = 0;
 
   packageData.structure.re2_up      = !mcp1.digitalRead(rotary2_2);
@@ -72,7 +71,6 @@ void anoRotaryEncoder2SetData() {
 }
 
 void anoRotaryEncoder1SetData() {
-  static int pos = 0;
   int encoder_direction = 0;
 
   encoder1->tick(

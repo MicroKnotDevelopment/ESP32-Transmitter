@@ -76,19 +76,38 @@ void mcp2Init() {
   );
 }
 
+#if defined(ESP8266) || defined(ESP32)
+  ICACHE_RAM_ATTR
+#endif
+void setFlag(void) {
+  // check if the interrupt is enabled
+  if(!enableInterrupt) {
+    return;
+  }
+
+  // we sent a packet, set the flag
+  transmittedFlag = true;
+}
+
 // sx1280 init
 void sx1280Init() {
   if(enableSerialPrint) {
     Serial.print(F("[SX1280] Initializing ... ")); 
   }
-  // carrier frequency:           2400.0 MHz
-  // bandwidth:                   812.5 kHz
-  // spreading factor:            9
-  // coding rate:                 7
-  // output power:                10 dBm
-  // preamble length:             12 symbols
-  // CRC:                         enabled
-  int state = radio.begin(SX1280_freq, SX1280_bw, SX1280_sf, SX1280_cr, SX1280_syncWord, SX1280_power, SX1280_preambleLength);
+
+  int state = radio.beginFLRC();
+
+  state = radio.setFrequency(frequency);
+  state = radio.setBitRate(bitRate);
+  state = radio.setCodingRate(codingRate);
+  state = radio.setOutputPower(outputPower);
+  state = radio.setDataShaping(dataShaping);
+  state = radio.setSyncWord(syncWord, 4);
+  state = radio.setCRC(crcValue);
+
+  radio.setDio1Action(setFlag);
+  radio.startTransmit(packageData.byteArray, sizeof(packageData.byteArray));
+
 
   if(enableSerialPrint) {
     if (state == RADIOLIB_ERR_NONE) {

@@ -37,9 +37,17 @@ int16_t
         rotary1_up, rotary1_down, rotary1_left, rotary1_right, rotary1_center, rotary1_enc1, rotary1_enc2,
         
         // ANO Rotary Navigation #2
-        rotary2_up, rotary2_down, rotary2_left, rotary2_right, rotary2_center, rotary2_enc1, rotary2_enc2;
+        rotary2_up, rotary2_down, rotary2_left, rotary2_right, rotary2_center, rotary2_enc1, rotary2_enc2,
+        pos = 0;
 
 
 // ads1115
 Adafruit_ADS1115 ads;
 int16_t adc0, adc1, adc2, adc3, adc0_map, adc1_map, adc2_map, adc3_map, j1xMiddle, j1yMiddle, j2xMiddle, j2yMiddle;
+
+// SX128x
+// flag to indicate that a packet was sent
+volatile bool transmittedFlag = false;
+
+// disable interrupt when it's not needed
+volatile bool enableInterrupt = true;

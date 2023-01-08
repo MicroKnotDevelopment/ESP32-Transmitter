@@ -49,33 +49,26 @@ void func_txSetData( void * pvParameters ){
 }
 
 /**
- * Use core 0 to send the data
+ * Use core 1 to send the data
  */
 void func_txSendData( void * pvParameters ){
     while(true){
       /*
         Radio Transmit
       */
+      if(transmittedFlag) {
+        enableInterrupt = false;
+        transmittedFlag = false;
+        radio.finishTransmit();
+        int state = radio.startTransmit(packageData.byteArray, sizeof(packageData.byteArray));
+        enableInterrupt = true;
+      }
+      
       if (enableSerialPrint) {
         Serial.print("[SX1280] Transmitting packet ( ");
         Serial.print(sizeof(packageData.byteArray));
         Serial.print(" ) ... ");
-      }
-      
-      int state = radio.transmit(packageData.byteArray, sizeof(packageData.byteArray));
-
-      if (enableSerialPrint) {
-        if (state == RADIOLIB_ERR_NONE) {
-          // the packet was successfully transmitted
-          Serial.println(F("success!"));
-        } else if (state == RADIOLIB_ERR_PACKET_TOO_LONG) {
-          // the supplied packet was longer than 256 bytes
-          Serial.println(F("too long!"));
-        } else {
-          // some other error occurred
-          Serial.print(F("failed, code "));
-          Serial.println(state);
-        }
+        Serial.println("");
       }
     }
 }
@@ -111,20 +104,21 @@ void setup() {
     "task_txSetData", // Name of the task
     10000,            // Stack size in words
     NULL,             // Task input parameter
-    0,                // Priority of the task
+    4,                // Priority of the task
     &task_txSetData,  // Task handle
     taskCore1         // Core where the task should run
   );
- 
+
   xTaskCreatePinnedToCore(
     func_txSendData,    // Function to implement the task
     "task_txSendData",  // Name of the task 
     10000,              // Stack size in words 
     NULL,               // Task input parameter
-    1,                  // Priority of the task
+    3,                  // Priority of the task
     &task_txSendData,   // Task handle
     taskCore2           // Core where the task should run
   );
+
 }
 
 void loop() {
